@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .option {
+      background: #e0e0e0;
+      border: none;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .option:hover {
+      background: #d3d3d3;
+    }
+
+    #next-btn {
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #score {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Loading question...</h2>
+    <ul>
+      <li><button onclick="selectAnswer(this)" class="option">Option 1</button></li>
+      <li><button onclick="selectAnswer(this)" class="option">Option 2</button></li>
+      <li><button onclick="selectAnswer(this)" class="option">Option 3</button></li>
+      <li><button onclick="selectAnswer(this)" class="option">Option 4</button></li>
+    </ul>
+    <button onclick="nextQuestion()" id="next-btn">Next</button>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        options: ["Paris", "Rome", "Madrid", "Berlin"],
+        answer: "Paris"
+      },
+      {
+        question: "Which language runs in a web browser?",
+        options: ["Python", "Java", "C", "JavaScript"],
+        answer: "JavaScript"
+      },
+      {
+        question: "2 + 2 = ?",
+        options: ["3", "4", "5", "2"],
+        answer: "4"
+      },
+      {
+        question: "What does HTML stand for?",
+        options: [
+          "HyperText Markup Language",
+          "HighText Machine Language",
+          "HyperText Markdown Language",
+          "None of these"
+        ],
+        answer: "HyperText Markup Language"
+      }
+    ];
+
+    let index = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = questions[index];
+      document.getElementById("question").textContent = q.question;
+      const opts = document.querySelectorAll(".option");
+      opts.forEach((btn, i) => {
+        btn.textContent = q.options[i];
+        btn.style.background = "#e0e0e0";
+        btn.disabled = false;
+      });
+      document.getElementById("score").textContent = "";
+    }
+
+    function selectAnswer(btn) {
+      const correct = questions[index].answer;
+      const buttons = document.querySelectorAll(".option");
+
+      buttons.forEach(b => b.disabled = true); // Disable all options after answer
+
+      if (btn.textContent === correct) {
+        btn.style.background = "lightgreen";
+        score++;
+      } else {
+        btn.style.background = "salmon";
+        buttons.forEach(b => {
+          if (b.textContent === correct) {
+            b.style.background = "lightgreen";
+          }
+        });
+      }
+
+      document.getElementById("score").textContent = `Score: ${score}/${questions.length}`;
+    }
+
+    function nextQuestion() {
+      index++;
+      if (index < questions.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("question").textContent = "🎉 Quiz Completed!";
+        document.querySelector("ul").style.display = "none";
+        document.getElementById("next-btn").style.display = "none";
+        document.getElementById("score").textContent = `Final Score: ${score}/${questions.length}`;
+      }
+    }
+
+    // Load the first question when page loads
+    loadQuestion();
+  </script>
+</body>
+</html>
