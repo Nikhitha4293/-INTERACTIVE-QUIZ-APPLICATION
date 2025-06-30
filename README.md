@@ -22,3 +22,4 @@ The app leverages JavaScript for logic, question progression, answer validation,
 The app can be enhanced by adding features like question timers, progress bars, or storing scores locally.
 
 #output:
+![Image](https://github.com/user-attachments/assets/814f933b-7262-47ae-a297-d2aadce4cbc0)
